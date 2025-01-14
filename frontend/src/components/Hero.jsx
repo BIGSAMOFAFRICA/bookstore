@@ -22,6 +22,7 @@ const Hero = () => {
 
         <div className="relative w-full max-w-sm md:max-w-xl lg:max-w-3xl text-base lg:text-lg">
           <input
+            type="text"
             placeholder="e.g. Atomic habits"
             className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg placeholder:text-gray-600 bg-[#FFFCF2]"
           />

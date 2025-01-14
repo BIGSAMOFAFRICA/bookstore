@@ -3,9 +3,11 @@ import { Link } from "react-router";
 const Navbar = () => {
   return (
     <nav className="bg-[#252422] flex justify-between items-center text-[#FFFCF2] px-4 md:px-12 py-6">
-      <label className="font-semibold tracking-wider md:text-lg lg:text-xl">
-        📔Favlib
-      </label>
+      <Link to={"/"}>
+        <label className="font-semibold tracking-wider md:text-lg lg:text-xl cursor-pointer">
+          📔Favlib
+        </label>
+      </Link>
 
       <div className="flex items-center space-x-5 md:text-lg">
         <Link to={"/login"}>
