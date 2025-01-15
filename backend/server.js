@@ -4,6 +4,7 @@ import { connectToDB } from "./config/db.js";
 import User from "./models/user.model.js";
 import bcryptjs from "bcryptjs";
 import cors from "cors";
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 
@@ -13,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middlewares
 
-app.use(cors({ origin: process.env.CLIENT_URL })); // credentials: true
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -51,6 +52,21 @@ app.post("/api/signup", async (req, res) => {
       password: hashedPassword,
     });
 
+    // jwt
+
+    if (userDoc) {
+      const token = jwt.sign({ id: userDoc._id }, process.env.JWT_SECRET, {
+        expiresIn: "7d",
+      });
+
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+    }
+
     return res
       .status(200)
       .json({ user: userDoc, message: "User created successfully." });
@@ -58,6 +74,8 @@ app.post("/api/signup", async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
+
+// Log in
 
 app.listen(PORT, () => {
   connectToDB();
