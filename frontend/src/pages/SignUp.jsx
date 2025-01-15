@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 const SignUp = () => {
   return (
     <div className="min-h-screen text-[#252422] bg-[#CCC5B9] px-4 md:px-12">
@@ -31,7 +33,13 @@ const SignUp = () => {
           />
         </div>
 
-        <button className="w-full bg-[#403D39] text-[#FFFCF2] py-2 font-medium rounded-lg">Sign up</button>
+        <button className="w-full bg-[#403D39] text-[#FFFCF2] py-2 font-medium rounded-lg">
+          Sign up
+        </button>
+
+        <p>
+          Already have an account? <Link to={"/login"} className="text-[#944424]">Log in</Link>
+        </p>
       </div>
     </div>
   );
