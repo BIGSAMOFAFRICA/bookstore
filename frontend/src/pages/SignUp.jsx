@@ -1,17 +1,47 @@
 import { Link } from "react-router";
+import { useAuthStore } from "../store/authStore";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const { signup, isLoading, user, message, error } = useAuthStore();
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    try {
+      if (password !== confirmPassword) {
+        toast.error("Passwords must match.");
+        return;
+      }
+
+      await signup(username, email, password);
+      toast.success(message);
+      console.log("User: ", user);
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+      console.log(error);
+    }
+  };
   return (
     <div className="min-h-screen text-[#252422] bg-[#CCC5B9] px-4 md:px-12">
       <h2 className="text-center font-semibold pt-8 md:text-2xl w-full max-w-xl mx-auto">
         Sign Up
       </h2>
 
-      <div className="w-full max-w-xl mx-auto flex flex-col justify-center items-center space-y-4 mt-10">
+      <form
+        onSubmit={handleSignup}
+        className="w-full max-w-xl mx-auto flex flex-col justify-center items-center space-y-4 mt-10"
+      >
         <div className="flex flex-col w-full">
           <label className="md:text-lg">Username:</label>
           <input
             type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             placeholder="e.g. John Doe"
             className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg  bg-[#FFFCF2]"
           />
@@ -20,6 +50,8 @@ const SignUp = () => {
           <label className="md:text-lg">Email:</label>
           <input
             type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="johndoe@gmail.com"
             className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg  bg-[#FFFCF2]"
           />
@@ -28,6 +60,8 @@ const SignUp = () => {
           <label className="md:text-lg">Password:</label>
           <input
             type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
             className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg bg-[#FFFCF2]"
           />
@@ -36,19 +70,28 @@ const SignUp = () => {
           <label className="md:text-lg">Confirm Password:</label>
           <input
             type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Confirm your password"
             className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg bg-[#FFFCF2]"
           />
         </div>
-
-        <button className="w-full bg-[#403D39] text-[#FFFCF2] py-2 font-medium rounded-lg">
-          Sign up
+        {error && <p className="text-red-500">All fields are required.</p>}
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full bg-[#403D39] text-[#FFFCF2] py-2 font-medium rounded-lg"
+        >
+          {isLoading ? "Please wait..." : "Sign up"}
         </button>
 
         <p>
-          Already have an account? <Link to={"/login"} className="text-[#944424]">Log in</Link>
+          Already have an account?{" "}
+          <Link to={"/login"} className="text-[#944424]">
+            Log in
+          </Link>
         </p>
-      </div>
+      </form>
     </div>
   );
 };

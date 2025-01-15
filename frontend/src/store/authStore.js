@@ -7,8 +7,8 @@ export const useAuthStore = create((set) => ({
   // initial states
   user: null,
   isLoading: false,
-  isAuthenticated: false,
   message: null,
+  error: null,
 
   // functions
 
@@ -30,7 +30,7 @@ export const useAuthStore = create((set) => ({
     } catch (error) {
       set({
         isLoading: false,
-        message: error.response.data.message || "Error signing up.",
+        error: error.response.data.message || "Error signing up.",
       });
       throw error;
     }
