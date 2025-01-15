@@ -76,6 +76,50 @@ app.post("/api/signup", async (req, res) => {
 });
 
 // Log in
+app.post("/api/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const userDoc = await User.findOne({ username });
+    if (!userDoc) {
+      res.status(400).json({ message: "Invalid credentials." });
+    }
+
+    const isPasswordValid = await bcryptjs.compareSync(
+      password,
+      userDoc.password
+    );
+
+    if (!isPasswordValid) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid credentials." });
+    }
+
+    // jwt
+
+    if (userDoc) {
+      const token = jwt.sign({ id: userDoc._id }, process.env.JWT_SECRET, {
+        expiresIn: "7d",
+      });
+
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+    }
+
+    res.status(200).json({
+      message: "Logged in successfully.",
+      user: userDoc,
+    });
+  } catch (error) {
+    console.log("Error logging in", error);
+    res.status(400).json({ mesage: error.message });
+  }
+});
 
 app.listen(PORT, () => {
   connectToDB();
