@@ -17,6 +17,14 @@ const SignUp = () => {
           />
         </div>
         <div className="flex flex-col w-full">
+          <label className="md:text-lg">Email:</label>
+          <input
+            type="email"
+            placeholder="johndoe@gmail.com"
+            className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg  bg-[#FFFCF2]"
+          />
+        </div>
+        <div className="flex flex-col w-full">
           <label className="md:text-lg">Password:</label>
           <input
             type="password"
