@@ -7,7 +7,6 @@ export const useAuthStore = create((set) => ({
   // initial states
   user: null,
   isLoading: false,
-  message: null,
   error: null,
 
   // functions
@@ -25,7 +24,6 @@ export const useAuthStore = create((set) => ({
       set({
         user: response.data.user,
         isLoading: false,
-        message: response.data.message,
       });
     } catch (error) {
       set({

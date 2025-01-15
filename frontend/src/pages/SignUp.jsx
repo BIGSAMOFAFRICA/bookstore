@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useAuthStore } from "../store/authStore";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -8,7 +8,9 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { signup, isLoading, user, message, error } = useAuthStore();
+  const { signup, isLoading, error } = useAuthStore();
+
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -19,10 +21,8 @@ const SignUp = () => {
       }
 
       await signup(username, email, password);
-      toast.success(message);
-      console.log("User: ", user);
+      navigate("/");
     } catch (error) {
-      toast.error("Something went wrong. Please try again.");
       console.log(error);
     }
   };
@@ -76,7 +76,7 @@ const SignUp = () => {
             className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg bg-[#FFFCF2]"
           />
         </div>
-        {error && <p className="text-red-500">All fields are required.</p>}
+        {error && <p className="text-red-500">{error}</p>}
         <button
           type="submit"
           disabled={isLoading}

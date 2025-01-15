@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { connectToDB } from "./config/db.js";
 import User from "./models/user.model.js";
 import bcryptjs from "bcryptjs";
+import cors from "cors";
 
 dotenv.config();
 
@@ -10,6 +11,9 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
+// Middlewares
+
+app.use(cors({ origin: process.env.CLIENT_URL })); // credentials: true
 app.use(express.json());
 
 app.get("/", (req, res) => {
