@@ -46,8 +46,6 @@ export const useAuthStore = create((set) => ({
         password,
       });
 
-      console.log("Response: ", response.data.user);
-
       const { user, message } = response.data;
       set({
         user,
@@ -89,7 +87,6 @@ export const useAuthStore = create((set) => ({
       const response = await axios.post(`${API_URL}/logout`);
 
       const { message } = response.data;
-      console.log("Logout msg: ", message);
       set({
         message,
         isLoading: false,

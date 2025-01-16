@@ -6,11 +6,9 @@ import { useState } from "react";
 const LogIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isLoading, error, user } = useAuthStore();
+  const { login, isLoading, error} = useAuthStore();
 
   const navigate = useNavigate();
-
-  console.log("User: ", user);
 
   const handleLogin = async (e) => {
     e.preventDefault();
