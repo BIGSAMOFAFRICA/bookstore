@@ -147,11 +147,15 @@ app.get("/api/fetch-user", async (req, res) => {
     res.status(200).json({
       user: userDoc,
     });
-    
   } catch (error) {
     console.log("Error in fetching user", error);
     res.status(400).json({ message: error.message });
   }
+});
+
+app.post("/api/logout", async (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logged out successfully." });
 });
 
 app.listen(PORT, () => {
