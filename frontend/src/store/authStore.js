@@ -9,6 +9,7 @@ export const useAuthStore = create((set) => ({
   user: null,
   isLoading: false,
   error: null,
+  fetchingUser: true,
 
   // functions
 
@@ -60,6 +61,23 @@ export const useAuthStore = create((set) => ({
         isLoading: false,
       });
 
+      throw error;
+    }
+  },
+
+  fetchUser: async () => {
+    set({ fetchingUser: true, error: null });
+
+    try {
+      const response = await axios.get(`${API_URL}/fetch-user`);
+
+      set({ user: response.data.user, fetchingUser: false });
+    } catch (error) {
+      set({
+        error: error.response.data.message || "Error fetching user.",
+        fetchingUser: false,
+        user: null,
+      });
       throw error;
     }
   },
