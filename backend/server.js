@@ -81,8 +81,9 @@ app.post("/api/login", async (req, res) => {
 
   try {
     const userDoc = await User.findOne({ username });
+    console.log("userDoc: ", userDoc);
     if (!userDoc) {
-      res.status(400).json({ message: "Invalid credentials." });
+      return res.status(400).json({ message: "Invalid credentials." });
     }
 
     const isPasswordValid = await bcryptjs.compareSync(
@@ -91,9 +92,7 @@ app.post("/api/login", async (req, res) => {
     );
 
     if (!isPasswordValid) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid credentials." });
+      return res.status(400).json({ message: "Invalid credentials." });
     }
 
     // jwt
