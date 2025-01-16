@@ -126,12 +126,12 @@ app.post("/api/login", async (req, res) => {
 // Fetch User
 
 app.get("/api/fetch-user", async (req, res) => {
+  const { token } = req.cookies;
+  if (!token) {
+    return res.status(401).json({ message: "No token provided." });
+  }
+  
   try {
-    const { token } = req.cookies;
-    if (!token) {
-      return res.status(401).json({ message: "No token provided." });
-    }
-
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!decoded) {

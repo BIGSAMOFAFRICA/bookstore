@@ -1,8 +1,14 @@
 import { Link } from "react-router";
 import { useAuthStore } from "../store/authStore";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
+
+  const handleLogout = async () => {
+    const { message } = await logout();
+    toast.success(message);
+  };
   return (
     <nav className="bg-[#252422] flex justify-between items-center text-[#FFFCF2] px-4 md:px-12 py-6">
       <Link to={"/"}>
@@ -26,7 +32,7 @@ const Navbar = () => {
           <Link to={"/add-book"}>
             <button className="bg-[#403D39] px-3 py-2">Add book</button>
           </Link>
-          <button>Log out ({user.username})</button>
+          <button onClick={handleLogout}>Log out ({user.username})</button>
         </div>
       )}
     </nav>

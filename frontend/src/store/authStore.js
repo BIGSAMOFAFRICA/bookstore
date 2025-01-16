@@ -9,6 +9,7 @@ export const useAuthStore = create((set) => ({
   user: null,
   isLoading: false,
   error: null,
+  message: null,
   fetchingUser: true,
 
   // functions
@@ -37,7 +38,7 @@ export const useAuthStore = create((set) => ({
   },
 
   login: async (username, password) => {
-    set({ isLoading: true, message: null });
+    set({ isLoading: true, message: null, error: null });
 
     try {
       const response = await axios.post(`${API_URL}/login`, {
@@ -74,7 +75,7 @@ export const useAuthStore = create((set) => ({
       set({ user: response.data.user, fetchingUser: false });
     } catch (error) {
       set({
-        error: error.response.data.message || "Error fetching user.",
+        error: null,
         fetchingUser: false,
         user: null,
       });
@@ -83,14 +84,19 @@ export const useAuthStore = create((set) => ({
   },
 
   logout: async () => {
-    set({ isLoading: true, error: null });
+    set({ isLoading: true, error: null, message: null });
     try {
-      await axios.post(`${API_URL}/logout`);
+      const response = await axios.post(`${API_URL}/logout`);
+
+      const { message } = response.data;
+      console.log("Logout msg: ", message);
       set({
+        message,
         isLoading: false,
         user: null,
         error: null,
       });
+      return { message };
     } catch (error) {
       set({
         error: error.response.data.message || "Error logging out",
