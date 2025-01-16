@@ -5,6 +5,7 @@ import User from "./models/user.model.js";
 import bcryptjs from "bcryptjs";
 import cors from "cors";
 import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("Hello World2");
@@ -76,6 +78,7 @@ app.post("/api/signup", async (req, res) => {
 });
 
 // Log in
+
 app.post("/api/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -117,6 +120,37 @@ app.post("/api/login", async (req, res) => {
   } catch (error) {
     console.log("Error logging in", error);
     res.status(400).json({ mesage: error.message });
+  }
+});
+
+// Fetch User
+
+app.get("/api/fetch-user", async (req, res) => {
+  try {
+    const { token } = req.cookies;
+    if (!token) {
+      return res.status(401).json({ message: "No token provided." });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (!decoded) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+
+    const userDoc = await User.findById(decoded.id).select("-password"); // Find all fields except the password
+
+    if (!userDoc) {
+      return res.status(400).json({ message: "User not found." });
+    }
+
+    res.status(200).json({
+      user: userDoc,
+    });
+    
+  } catch (error) {
+    console.log("Error in fetching user", error);
+    res.status(400).json({ message: error.message });
   }
 });
 
