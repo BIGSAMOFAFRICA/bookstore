@@ -9,6 +9,7 @@ import { useAuthStore } from "./store/authStore";
 import { useEffect } from "react";
 import RedirectAuthenticatedUser from "./providers/RedirectAuthenticatedUsers";
 import AddBook from "./pages/AddBook";
+import RedirectUnauthenticatedUser from "./providers/RedirectUnauthenticatedUsers";
 
 function App() {
   const { fetchUser, fetchingUser } = useAuthStore();
@@ -46,9 +47,9 @@ function App() {
         <Route
           path="/add-book"
           element={
-            <RedirectAuthenticatedUser>
+            <RedirectUnauthenticatedUser>
               <AddBook />
-            </RedirectAuthenticatedUser>
+            </RedirectUnauthenticatedUser>
           }
         />
       </Routes>
