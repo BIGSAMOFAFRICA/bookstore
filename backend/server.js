@@ -23,6 +23,9 @@ app.get("/", (req, res) => {
   res.send("Hello World2");
 });
 
+
+// ================== Authentication =============== 
+
 // Sign up
 
 app.post("/api/signup", async (req, res) => {
@@ -157,6 +160,16 @@ app.post("/api/logout", async (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "Logged out successfully." });
 });
+
+
+// =================== Book Stuffs ===================
+
+app.post("/api/add-book", async (req, res) => {
+  const formData = req.
+})
+
+
+
 
 app.listen(PORT, () => {
   connectToDB();

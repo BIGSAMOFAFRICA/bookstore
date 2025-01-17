@@ -1,20 +1,50 @@
+import { useState } from "react";
 import { useAuthStore } from "../store/authStore";
+import toast from "react-hot-toast";
 
 const AddBook = () => {
+  const [image, setImage] = useState("");
+  const [title, setTitle] = useState("");
+  const [subtitle, setSubtitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [link, setLink] = useState("");
+  const [review, setReview] = useState("");
   const { isLoading, error } = useAuthStore();
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = function () {
+      setImage(reader.result);
+    };
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!image) {
+      toast.error("Please fill in required information.");
+      return;
+    }
+  };
   return (
     <div className="min-h-screen text-[#252422] bg-[#CCC5B9] px-4 md:px-12 pb-16">
       <h2 className="text-center font-semibold pt-8 md:text-2xl w-full max-w-xl mx-auto">
         Add Book to Library
       </h2>
 
-      <form className="w-full max-w-xl mx-auto flex flex-col justify-center items-center space-y-4 mt-10">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-xl mx-auto flex flex-col justify-center items-center space-y-4 mt-10"
+      >
         <div className="flex flex-col w-full">
           <label className="md:text-lg">Book Image*:</label>
           <input
             type="file"
             accept="image/*"
+            onChange={handleImageChange}
             className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg  bg-[#FFFCF2]"
           />
         </div>
@@ -23,6 +53,8 @@ const AddBook = () => {
           <label className="md:text-lg">Title*:</label>
           <input
             type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             placeholder=""
             className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg  bg-[#FFFCF2]"
           />
@@ -31,6 +63,8 @@ const AddBook = () => {
           <label className="md:text-lg">Subtitle (optional):</label>
           <input
             type="text"
+            value={subtitle}
+            onChange={(e) => setSubtitle(e.target.value)}
             placeholder=""
             className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg bg-[#FFFCF2]"
           />
@@ -39,6 +73,8 @@ const AddBook = () => {
           <label className="md:text-lg">Author (optional):</label>
           <input
             type="text"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
             placeholder=""
             className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg bg-[#FFFCF2]"
           />
@@ -47,6 +83,8 @@ const AddBook = () => {
           <label className="md:text-lg">Link*:</label>
           <input
             type="text"
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
             placeholder=""
             className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg bg-[#FFFCF2]"
           />
@@ -55,6 +93,8 @@ const AddBook = () => {
           <label className="md:text-lg">Personal Review (optional):</label>
           <textarea
             rows={4}
+            value={review}
+            onChange={(e) => setReview(e.target.value)}
             className="w-full px-3 py-1.5 resize-none md:py-2 text-[#252422] rounded-lg bg-[#FFFCF2]"
           />
         </div>
