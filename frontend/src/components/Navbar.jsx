@@ -10,7 +10,7 @@ const Navbar = () => {
     toast.success(message);
   };
   return (
-    <nav className="bg-[#252422] flex justify-between items-center text-[#FFFCF2] px-4 md:px-12 py-6">
+    <nav className="bg-[#252422] flex justify-between items-center text-[#FFFCF2] px-4 md:px-12 py-4 md:py-6">
       <Link to={"/"}>
         <label className="font-semibold tracking-wider md:text-lg lg:text-xl cursor-pointer">
           📔Favlib

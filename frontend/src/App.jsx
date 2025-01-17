@@ -7,6 +7,7 @@ import LogIn from "./pages/LogIn";
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/authStore";
 import { useEffect } from "react";
+import RedirectAuthenticatedUser from "./providers/RedirectAuthenticatedUsers";
 
 function App() {
   const { fetchUser, fetchingUser } = useAuthStore();
@@ -20,12 +21,26 @@ function App() {
   }
   return (
     <>
-      <Toaster position="top-right" />
+      <Toaster />
       <Navbar />
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<LogIn />} />
+        <Route
+          path="/signup"
+          element={
+            <RedirectAuthenticatedUser>
+              <SignUp />
+            </RedirectAuthenticatedUser>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <RedirectAuthenticatedUser>
+              <LogIn />
+            </RedirectAuthenticatedUser>
+          }
+        />
       </Routes>
       <Footer />
     </>
