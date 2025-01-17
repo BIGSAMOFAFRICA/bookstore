@@ -11,7 +11,7 @@ const AddBook = () => {
 
       <form className="w-full max-w-xl mx-auto flex flex-col justify-center items-center space-y-4 mt-10">
         <div className="flex flex-col w-full">
-          <label className="md:text-lg">Book Image:</label>
+          <label className="md:text-lg">Book Image*:</label>
           <input
             type="file"
             accept="image/*"
