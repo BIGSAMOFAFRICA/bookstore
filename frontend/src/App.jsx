@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/authStore";
 import { useEffect } from "react";
 import RedirectAuthenticatedUser from "./providers/RedirectAuthenticatedUsers";
+import AddBook from "./pages/AddBook";
 
 function App() {
   const { fetchUser, fetchingUser } = useAuthStore();
@@ -38,6 +39,15 @@ function App() {
           element={
             <RedirectAuthenticatedUser>
               <LogIn />
+            </RedirectAuthenticatedUser>
+          }
+        />
+
+        <Route
+          path="/add-book"
+          element={
+            <RedirectAuthenticatedUser>
+              <AddBook />
             </RedirectAuthenticatedUser>
           }
         />

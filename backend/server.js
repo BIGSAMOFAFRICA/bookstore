@@ -84,7 +84,7 @@ app.post("/api/login", async (req, res) => {
 
   try {
     const userDoc = await User.findOne({ username });
-    console.log("userDoc: ", userDoc);
+
     if (!userDoc) {
       return res.status(400).json({ message: "Invalid credentials." });
     }

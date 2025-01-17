@@ -20,6 +20,10 @@ const Navbar = () => {
       {!user ? (
         <div className="flex items-center space-x-5 md:text-lg">
           <Link to={"/login"}>
+            <span>Add book</span>
+          </Link>
+
+          <Link to={"/login"}>
             <span>Log in</span>
           </Link>
 
