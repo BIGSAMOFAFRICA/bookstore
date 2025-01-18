@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/authStore";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 
 const AddBook = () => {
   const [image, setImage] = useState("");
@@ -10,6 +11,7 @@ const AddBook = () => {
   const [link, setLink] = useState("");
   const [review, setReview] = useState("");
   const { isLoading, error, addBook, user } = useAuthStore();
+  const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -42,6 +44,7 @@ const AddBook = () => {
     console.log("Book: ", book);
 
     toast.success(message);
+    navigate("/");
   };
   return (
     <div className="min-h-screen text-[#252422] bg-[#CCC5B9] px-4 md:px-12 pb-16">
