@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import RedirectAuthenticatedUser from "./providers/RedirectAuthenticatedUsers";
 import AddBook from "./pages/AddBook";
 import RedirectUnauthenticatedUser from "./providers/RedirectUnauthenticatedUsers";
+import Bookpage from "./pages/Bookpage";
 
 function App() {
   const { fetchUser, fetchingUser } = useAuthStore();
@@ -52,6 +53,8 @@ function App() {
             </RedirectUnauthenticatedUser>
           }
         />
+
+        <Route path="/book/:id" element={<Bookpage />} />
       </Routes>
       <Footer />
     </>
