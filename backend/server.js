@@ -7,8 +7,15 @@ import cors from "cors";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import Book from "./models/book.model.js";
+import { v2 as cloudinary } from "cloudinary";
 
 dotenv.config();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+})
 
 const app = express();
 
@@ -165,12 +172,14 @@ app.post("/api/logout", async (req, res) => {
 
 app.post("/api/add-book", async (req, res) => {
   const { image, title, subtitle, author, link, review, username } = req.body;
-
   try {
     // Image processes
+    const imageResponse = await cloudinary.uploader.upload(image, {
+      folder: "/Favlib",
+    });
 
     const book = await Book.create({
-      image,
+      image: imageResponse.secure_url,
       title,
       subtitle,
       author,
