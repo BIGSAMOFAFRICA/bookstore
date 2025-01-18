@@ -50,7 +50,7 @@ export const useBookStore = create((set) => ({
     } catch (error) {
       set({
         isLoading: false,
-        error: error.response.data.message || "Error adding book.",
+        error: error.response.data.message || "Error fetching books.",
       });
       throw error;
     }
@@ -60,13 +60,13 @@ export const useBookStore = create((set) => ({
     set({ isLoading: true, error: null });
 
     try {
-      const response = await axios.get(`${API_URL}/fetch-user/${id}`);
+      const response = await axios.get(`${API_URL}/fetch-book/${id}`);
 
-      set({ book: response.data.user, isLoading: false });
+      set({ book: response.data.book, isLoading: false });
     } catch (error) {
       set({
         isLoading: false,
-        error: error.response.data.message || "Error adding book.",
+        error: error.response.data.message || "Error fetching book.",
       });
       throw error;
     }
