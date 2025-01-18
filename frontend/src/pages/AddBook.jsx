@@ -44,7 +44,7 @@ const AddBook = () => {
     navigate("/");
   };
   return (
-    <div className="min-h-screen text-[#252422] bg-[#CCC5B9] px-4 md:px-12 pb-16">
+    <div className="min-h-screen text-[#252422] bg-[#f5f5f5] px-4 md:px-12 pb-16">
       <h2 className="text-center font-semibold pt-8 md:text-2xl w-full max-w-xl mx-auto">
         Add Book to Library
       </h2>
