@@ -7,13 +7,14 @@ axios.defaults.withCredentials = true;
 export const useBookStore = create((set) => ({
   // initial states
   book: null,
+  books: [],
   isLoading: false,
   error: null,
   message: null,
 
   // functions
 
-  addBook: async (image, title, subtitle, author, link, review, username) => {
+  addBook: async (image, title, subtitle, author, link, review) => {
     set({ isLoading: true, error: null, message: null });
 
     try {
@@ -24,7 +25,6 @@ export const useBookStore = create((set) => ({
         author,
         link,
         review,
-        username,
       });
 
       const { message, book } = response.data;
@@ -32,6 +32,21 @@ export const useBookStore = create((set) => ({
       set({ book, message, isLoading: false });
 
       return { message, book };
+    } catch (error) {
+      set({
+        isLoading: false,
+        error: error.response.data.message || "Error adding book.",
+      });
+      throw error;
+    }
+  },
+
+  fetchBooks: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await axios.get(`${API_URL}/fetch-books`);
+
+      set({ books: response.data.books, isLoading: false });
     } catch (error) {
       set({
         isLoading: false,

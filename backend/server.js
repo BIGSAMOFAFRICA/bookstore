@@ -15,7 +15,7 @@ cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET,
-})
+});
 
 const app = express();
 
@@ -171,12 +171,24 @@ app.post("/api/logout", async (req, res) => {
 // =================== Book Stuffs ===================
 
 app.post("/api/add-book", async (req, res) => {
-  const { image, title, subtitle, author, link, review, username } = req.body;
+  const { image, title, subtitle, author, link, review } = req.body;
+  const { token } = req.cookies;
+  if (!token) {
+    return res.status(401).json({ message: "No token provided." });
+  }
   try {
     // Image processes
     const imageResponse = await cloudinary.uploader.upload(image, {
       folder: "/Favlib",
     });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (!decoded) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+
+    const userDoc = await User.findById(decoded.id).select("-password");
 
     const book = await Book.create({
       image: imageResponse.secure_url,
@@ -185,7 +197,7 @@ app.post("/api/add-book", async (req, res) => {
       author,
       link,
       review,
-      username,
+      user: userDoc,
     });
     return res.status(200).json({ book, message: "Book added successfully." });
   } catch (error) {
@@ -195,11 +207,15 @@ app.post("/api/add-book", async (req, res) => {
 
 app.get("/api/fetch-books", async (req, res) => {
   try {
-    const books = Book.find
+    const books = await Book.find()
+      .populate("user", ["username"])
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({ books });
   } catch (error) {
-    
+    res.status(400).json({ message: error.message });
   }
-})
+});
 
 app.listen(PORT, () => {
   connectToDB();

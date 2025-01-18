@@ -1,10 +1,15 @@
+import { useEffect } from "react";
 import { useBookStore } from "../store/bookStore";
 
 const BookList = () => {
-  const { book } = useBookStore();
+  const { books, fetchBooks } = useBookStore();
 
-  console.log("Books: ", book)
+  console.log("Books: ", books);
   const booklist = ["", "", "", "", "", ""];
+
+  useEffect(() => {
+    fetchBooks();
+  }, [fetchBooks]);
   return (
     <div className="text-[#252422] bg-[#CCC5B9] px-4 md:px-12 pb-20">
       <h1 className="py-6 text-xl md:text-2xl lg:text-3xl w-full mx-auto max-w-6xl">

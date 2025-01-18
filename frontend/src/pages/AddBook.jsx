@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useAuthStore } from "../store/authStore";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { useBookStore } from "../store/bookStore";
@@ -12,7 +11,6 @@ const AddBook = () => {
   const [link, setLink] = useState("");
   const [review, setReview] = useState("");
   const { isLoading, error, addBook } = useBookStore();
-  const { user } = useAuthStore();
   const navigate = useNavigate();
 
   const handleImageChange = (e) => {
@@ -40,7 +38,6 @@ const AddBook = () => {
       author,
       link,
       review,
-      user.username
     );
 
     toast.success(message);
