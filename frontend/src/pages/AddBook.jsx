@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuthStore } from "../store/authStore";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
+import { useBookStore } from "../store/bookStore";
 
 const AddBook = () => {
   const [image, setImage] = useState("");
@@ -10,7 +11,8 @@ const AddBook = () => {
   const [author, setAuthor] = useState("");
   const [link, setLink] = useState("");
   const [review, setReview] = useState("");
-  const { isLoading, error, addBook, user } = useAuthStore();
+  const { isLoading, error, addBook } = useBookStore();
+  const { user } = useAuthStore();
   const navigate = useNavigate();
 
   const handleImageChange = (e) => {
@@ -31,7 +33,7 @@ const AddBook = () => {
       return;
     }
 
-    const { message, book } = await addBook(
+    const { message } = await addBook(
       image,
       title,
       subtitle,
@@ -40,8 +42,6 @@ const AddBook = () => {
       review,
       user.username
     );
-
-    console.log("Book: ", book);
 
     toast.success(message);
     navigate("/");
