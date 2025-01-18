@@ -217,6 +217,16 @@ app.get("/api/fetch-books", async (req, res) => {
   }
 });
 
+app.get("/api/fetch-book/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const book = await Book.findById(id).populate("user", ["username"]);
+    return res.status(200).json({ book });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 app.listen(PORT, () => {
   connectToDB();
   console.log(`Server running on port ${PORT}`);
