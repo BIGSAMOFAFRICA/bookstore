@@ -193,6 +193,14 @@ app.post("/api/add-book", async (req, res) => {
   }
 });
 
+app.get("/api/fetch-books", async (req, res) => {
+  try {
+    const books = Book.find
+  } catch (error) {
+    
+  }
+})
+
 app.listen(PORT, () => {
   connectToDB();
   console.log(`Server running on port ${PORT}`);
