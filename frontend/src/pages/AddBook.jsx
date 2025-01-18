@@ -24,7 +24,7 @@ const AddBook = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!image) {
+    if (!image || !title || !author || !link) {
       toast.error("Please fill in required information.");
       return;
     }
@@ -70,7 +70,7 @@ const AddBook = () => {
           />
         </div>
         <div className="flex flex-col w-full">
-          <label className="md:text-lg">Author (optional):</label>
+          <label className="md:text-lg">Author*:</label>
           <input
             type="text"
             value={author}

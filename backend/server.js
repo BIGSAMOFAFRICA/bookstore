@@ -6,6 +6,7 @@ import bcryptjs from "bcryptjs";
 import cors from "cors";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+import Book from "./models/book.model.js";
 
 dotenv.config();
 
@@ -23,8 +24,7 @@ app.get("/", (req, res) => {
   res.send("Hello World2");
 });
 
-
-// ================== Authentication =============== 
+// ================== Authentication ===============
 
 // Sign up
 
@@ -133,7 +133,7 @@ app.get("/api/fetch-user", async (req, res) => {
   if (!token) {
     return res.status(401).json({ message: "No token provided." });
   }
-  
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -161,15 +161,30 @@ app.post("/api/logout", async (req, res) => {
   res.status(200).json({ message: "Logged out successfully." });
 });
 
-
 // =================== Book Stuffs ===================
 
 app.post("/api/add-book", async (req, res) => {
-  const formData = req.
-})
+  const { image, title, subtitle, author, link, review, username } = req.body;
 
+  try {
+    // Image processes
 
-
+    const book = await Book.create({
+      image,
+      title,
+      subtitle,
+      author,
+      link,
+      review,
+      username,
+    });
+    return res
+      .status(200)
+      .json({ book, message: "Book added successfully." });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
 
 app.listen(PORT, () => {
   connectToDB();
