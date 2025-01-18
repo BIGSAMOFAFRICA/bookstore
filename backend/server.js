@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 5000;
 // Middlewares
 
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
-app.use(express.json());
+app.use(express.json({ limit: "20mb" }));
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
@@ -178,9 +178,7 @@ app.post("/api/add-book", async (req, res) => {
       review,
       username,
     });
-    return res
-      .status(200)
-      .json({ book, message: "Book added successfully." });
+    return res.status(200).json({ book, message: "Book added successfully." });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
