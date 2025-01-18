@@ -9,7 +9,7 @@ const AddBook = () => {
   const [author, setAuthor] = useState("");
   const [link, setLink] = useState("");
   const [review, setReview] = useState("");
-  const { isLoading, error } = useAuthStore();
+  const { isLoading, error, addBook, user } = useAuthStore();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -21,13 +21,27 @@ const AddBook = () => {
     };
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!image || !title || !author || !link) {
       toast.error("Please fill in required information.");
       return;
     }
+
+    const { message, book } = await addBook(
+      image,
+      title,
+      subtitle,
+      author,
+      link,
+      review,
+      user.username
+    );
+
+    console.log("Book: ", book);
+
+    toast.success(message);
   };
   return (
     <div className="min-h-screen text-[#252422] bg-[#CCC5B9] px-4 md:px-12 pb-16">

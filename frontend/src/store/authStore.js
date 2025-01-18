@@ -122,6 +122,8 @@ export const useAuthStore = create((set) => ({
       const { message, book } = response.data;
 
       set({ book, message, isLoading: false });
+
+      return { message, book };
     } catch (error) {
       set({
         isLoading: false,
