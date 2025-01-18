@@ -55,4 +55,20 @@ export const useBookStore = create((set) => ({
       throw error;
     }
   },
+
+  fetchBook: async (id) => {
+    set({ isLoading: true, error: null });
+
+    try {
+      const response = await axios.get(`${API_URL}/fetch-user/${id}`);
+
+      set({ book: response.data.user, isLoading: false });
+    } catch (error) {
+      set({
+        isLoading: false,
+        error: error.response.data.message || "Error adding book.",
+      });
+      throw error;
+    }
+  },
 }));
