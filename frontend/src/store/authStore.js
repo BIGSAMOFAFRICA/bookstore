@@ -7,6 +7,7 @@ axios.defaults.withCredentials = true;
 export const useAuthStore = create((set) => ({
   // initial states
   user: null,
+  book: null,
   isLoading: false,
   error: null,
   message: null,
@@ -100,6 +101,32 @@ export const useAuthStore = create((set) => ({
         isLoading: false,
       });
 
+      throw error;
+    }
+  },
+
+  addBook: async (image, title, subtitle, author, link, review, username) => {
+    set({ isLoading: true, error: null, message: null });
+
+    try {
+      const response = await axios.post(`${API_URL}/add-book`, {
+        image,
+        title,
+        subtitle,
+        author,
+        link,
+        review,
+        username,
+      });
+
+      const { message, book } = response.data;
+
+      set({ book, message, isLoading: false });
+    } catch (error) {
+      set({
+        isLoading: false,
+        error: error.response.data.message || "Error adding book.",
+      });
       throw error;
     }
   },
