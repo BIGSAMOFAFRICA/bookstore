@@ -49,14 +49,14 @@ const Bookpage = () => {
             </p>
 
             {user?._id === book?.user?._id && (
-              <div className="text-2xl font-bold tracking-widest -mt-2 relative">
-                <span onClick={() => setOpen(!open)} className="cursor-pointer">
+              <div className="text-2xl font-bold -mt-2 relative">
+                <span onClick={() => setOpen(!open)} className="cursor-pointer tracking-widest">
                   ...
                 </span>
 
                 {open && (
-                  <div className="absolute bg-[#f5f5f5] px-5 text-base font-normal right-0 top-10">
-                    <p className="mb-2">Edit</p>
+                  <div className="absolute bg-[#f5f5f5] shadow-md pb-2 px-5 text-base font-normal right-0 top-10">
+                    <Link to={`/book/${book._id}/update`}><p className="mb-2 pb-2 border-b border-gray-300">Update</p></Link>
                     <p className="text-red-500 cursor-pointer">Delete</p>
                   </div>
                 )}
