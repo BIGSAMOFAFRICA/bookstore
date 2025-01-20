@@ -207,9 +207,7 @@ app.post("/api/add-book", async (req, res) => {
 
 app.get("/api/fetch-books", async (req, res) => {
   try {
-    const books = await Book.find()
-      .populate("user", ["username"])
-      .sort({ createdAt: -1 });
+    const books = await Book.find().sort({ createdAt: -1 });
 
     return res.status(200).json({ books });
   } catch (error) {
@@ -222,6 +220,20 @@ app.get("/api/fetch-book/:id", async (req, res) => {
     const { id } = req.params;
     const book = await Book.findById(id).populate("user", ["username"]);
     return res.status(200).json({ book });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+app.get("/api/search", async (req, res) => {
+  try {
+    const searchTerm = req.query.searchTerm || "";
+
+    const books = await Book.find({
+      title: { $regex: searchTerm, $options: "i" },
+    }).sort({ createdAt: -1 });
+
+    return res.status(200).json({ books });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
