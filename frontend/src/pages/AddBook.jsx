@@ -45,13 +45,13 @@ const AddBook = () => {
   };
   return (
     <div className="min-h-screen text-[#252422] bg-[#f5f5f5] px-4 md:px-12 pb-16">
-      <h2 className="text-center font-semibold pt-8 md:text-2xl w-full max-w-xl mx-auto">
+      <h2 className="text-center font-semibold pt-8 text-xl md:text-2xl w-full max-w-xl mx-auto">
         Add Book to Library
       </h2>
 
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-xl mx-auto flex flex-col justify-center items-center space-y-4 mt-10"
+        className="w-full max-w-xl mx-auto flex flex-col justify-center items-center space-y-4 mt-5 md:mt-10"
       >
         <div className="flex flex-col w-full">
           <label className="md:text-lg">Book Image*:</label>
@@ -59,7 +59,7 @@ const AddBook = () => {
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg  bg-[#FFFCF2]"
+            className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg  bg-white border border-gray-500"
           />
         </div>
 
@@ -69,8 +69,8 @@ const AddBook = () => {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder=""
-            className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg  bg-[#FFFCF2]"
+            placeholder="Enter the book title"
+            className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg  bg-white border border-gray-500"
           />
         </div>
         <div className="flex flex-col w-full">
@@ -79,8 +79,8 @@ const AddBook = () => {
             type="text"
             value={subtitle}
             onChange={(e) => setSubtitle(e.target.value)}
-            placeholder=""
-            className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg bg-[#FFFCF2]"
+            placeholder="Enter the book subtitle"
+            className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg bg-white border border-gray-500"
           />
         </div>
         <div className="flex flex-col w-full">
@@ -89,8 +89,8 @@ const AddBook = () => {
             type="text"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
-            placeholder=""
-            className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg bg-[#FFFCF2]"
+            placeholder="Enter author's name"
+            className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg bg-white border border-gray-500"
           />
         </div>
         <div className="flex flex-col w-full">
@@ -99,8 +99,8 @@ const AddBook = () => {
             type="text"
             value={link}
             onChange={(e) => setLink(e.target.value)}
-            placeholder=""
-            className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg bg-[#FFFCF2]"
+            placeholder="Link to where users can find the book"
+            className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg bg-white border border-gray-500"
           />
         </div>
         <div className="flex flex-col w-full">
@@ -108,8 +108,9 @@ const AddBook = () => {
           <textarea
             rows={4}
             value={review}
+            placeholder="Your personal review"
             onChange={(e) => setReview(e.target.value)}
-            className="w-full px-3 py-1.5 resize-none md:py-2 text-[#252422] rounded-lg bg-[#FFFCF2]"
+            className="w-full px-3 py-1.5 resize-none md:py-2 text-[#252422] rounded-lg bg-white border border-gray-500"
           />
         </div>
         {error && <p className="text-red-500">{error}</p>}
