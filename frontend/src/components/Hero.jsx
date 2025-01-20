@@ -1,5 +1,27 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import BgVideo from "../assets/bg_video.mp4";
 const Hero = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("searchTerm", searchTerm);
+
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  };
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlParams.get("searchTerm");
+
+    if (searchTermFromUrl) {
+      setSearchTerm(searchTermFromUrl);
+    }
+  }, []);
   return (
     <div className="relative h-[75vh] lg:h-[90vh] text-[#FFFCF2] px-4 md:px-12 overflow-hidden">
       <div className="bg-[#252422] w-full h-full absolute top-0 left-0 opacity-80 -z-10"></div>
@@ -20,19 +42,24 @@ const Hero = () => {
           like you.
         </h1>
 
-        <div className="relative w-full max-w-sm md:max-w-xl lg:max-w-3xl text-base lg:text-lg">
+        <form
+          onSubmit={handleSubmit}
+          className="relative w-full max-w-sm md:max-w-xl lg:max-w-3xl text-base lg:text-lg"
+        >
           <input
             type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="e.g. Atomic habits"
             className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg placeholder:text-gray-600 bg-[#FFFCF2]"
           />
           <button
-            type="button"
+            type="submit"
             className="absolute right-0 top-0 bottom-0 bg-[#403D39] px-4 border border-white transitionfont-semibold rounded-r-lg"
           >
             Search
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );
