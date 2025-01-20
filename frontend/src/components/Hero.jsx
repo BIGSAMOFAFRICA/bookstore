@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import BgVideo from "../assets/bg_video.mp4";
 const Hero = () => {
@@ -14,14 +14,6 @@ const Hero = () => {
     navigate(`/search?${searchQuery}`);
   };
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const searchTermFromUrl = urlParams.get("searchTerm");
-
-    if (searchTermFromUrl) {
-      setSearchTerm(searchTermFromUrl);
-    }
-  }, []);
   return (
     <div className="relative h-[75vh] lg:h-[90vh] text-[#FFFCF2] px-4 md:px-12 overflow-hidden">
       <div className="bg-[#252422] w-full h-full absolute top-0 left-0 opacity-80 -z-10"></div>

@@ -228,7 +228,7 @@ app.get("/api/fetch-book/:id", async (req, res) => {
 app.get("/api/search", async (req, res) => {
   try {
     const searchTerm = req.query.searchTerm || "";
-
+    console.log("Search: ", searchTerm)
     const books = await Book.find({
       title: { $regex: searchTerm, $options: "i" },
     }).sort({ createdAt: -1 });
