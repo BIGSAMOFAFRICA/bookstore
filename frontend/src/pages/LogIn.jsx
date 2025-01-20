@@ -37,7 +37,7 @@ const LogIn = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="e.g. John Doe"
-            className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg  bg-[#FFFCF2]"
+            className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg  bg-white border border-gray-500"
           />
         </div>
         <div className="flex flex-col w-full">
@@ -47,7 +47,7 @@ const LogIn = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
-            className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg bg-[#FFFCF2]"
+            className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg bg-white border border-gray-500"
           />
         </div>
         {error && <p className="text-red-500">{error}</p>}
