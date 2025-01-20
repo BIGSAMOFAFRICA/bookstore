@@ -43,7 +43,7 @@ const Searchpage = () => {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="e.g. Atomic habits"
+            placeholder="e.g. Purple hibiscus"
             className="w-full px-3 py-1.5 md:py-2 text-[#252422] rounded-lg placeholder:text-gray-600 bg-white border border-gray-500"
           />
           <button
