@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
-    "start": "SET NODE_ENV=production&&node backend/server.js"
+    "start": "NODE_ENV=production node backend/server.js"
   },
   "type": "module",
   "keywords": [],
