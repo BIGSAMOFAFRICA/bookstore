@@ -114,4 +114,21 @@ export const useBookStore = create((set) => ({
       throw error;
     }
   },
+
+  deleteBook: async (id) => {
+    set({ isLoading: true, error: null, message: null });
+    try {
+      const response = await axios.delete(`${API_URL}/delete-book/${id}`);
+      const { message } = response.data;
+
+      set({ message, isLoading: false });
+      return { message };
+    } catch (error) {
+      set({
+        isLoading: false,
+        error: error.response.data.message || "Error deleting book.",
+      });
+      throw error;
+    }
+  },
 }));

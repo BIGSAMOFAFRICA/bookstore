@@ -285,7 +285,7 @@ app.post("/api/update-book/:id", async (req, res) => {
   }
 });
 
-app.delete("/api/delete/:id", async (req, res) => {
+app.delete("/api/delete-book/:id", async (req, res) => {
   const { id } = req.params;
   const { token } = req.cookies;
   if (!token) {
