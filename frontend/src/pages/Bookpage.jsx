@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { useBookStore } from "../store/bookStore";
 import { useAuthStore } from "../store/authStore";
+import toast from "react-hot-toast";
 
 const Bookpage = () => {
   const { user } = useAuthStore();
-  const { fetchBook, book, isLoading } = useBookStore();
+  const { fetchBook, book, isLoading, deleteBook } = useBookStore();
   const navigate = useNavigate("/");
   const params = useParams();
   const [open, setOpen] = useState(false);
@@ -19,6 +20,12 @@ const Bookpage = () => {
   }
 
   console.log("Book: ", book);
+
+  const handleDelete = async () => {
+    const { message } = await deleteBook(params.id);
+    toast.success(message);
+    navigate("/");
+  };
   return (
     <div className="min-h-screen text-[#252422] bg-[#f5f5f5] px-4 md:px-12 pb-10">
       <p className="cursor-pointer py-3" onClick={() => navigate("/")}>
@@ -50,14 +57,21 @@ const Bookpage = () => {
 
             {user?._id === book?.user?._id && (
               <div className="text-2xl font-bold -mt-2 relative">
-                <span onClick={() => setOpen(!open)} className="cursor-pointer tracking-widest">
+                <span
+                  onClick={() => setOpen(!open)}
+                  className="cursor-pointer tracking-widest"
+                >
                   ...
                 </span>
 
                 {open && (
                   <div className="absolute bg-[#f5f5f5] shadow-md pb-2 px-5 text-base font-normal right-0 top-10">
-                    <Link to={`/book/${book._id}/update`}><p className="mb-2 pb-2 border-b border-gray-300">Update</p></Link>
-                    <p className="text-red-500 cursor-pointer">Delete</p>
+                    <Link to={`/book/${book._id}/update`}>
+                      <p className="mb-2 pb-2 border-b border-gray-300">
+                        Update
+                      </p>
+                    </Link>
+                    <p onClick={handleDelete} className="text-red-500 cursor-pointer">Delete</p>
                   </div>
                 )}
               </div>
