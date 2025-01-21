@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const API_URL = "https://favlib.onrender.com/";
+const API_URL = "https://favlib.onrender.com/api";
 axios.defaults.withCredentials = true;
 
 export const useAuthStore = create((set) => ({
