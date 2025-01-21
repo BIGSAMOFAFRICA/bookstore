@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import Book from "./models/book.model.js";
 import { v2 as cloudinary } from "cloudinary";
+import path from "path";
 
 dotenv.config();
 
@@ -21,15 +22,13 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
+const __dirname = path.resolve();
+
 // Middlewares
 
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json({ limit: "20mb" }));
 app.use(cookieParser());
-
-app.get("/", (req, res) => {
-  res.send("Hello World2");
-});
 
 // ================== Authentication ===============
 
@@ -331,6 +330,14 @@ app.get("/api/search", async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
+
+if(process.env.NODE_ENV === "production"){
+  app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+  });
+}
 
 app.listen(PORT, () => {
   connectToDB();
