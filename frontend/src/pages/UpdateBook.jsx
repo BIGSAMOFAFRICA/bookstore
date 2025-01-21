@@ -4,13 +4,13 @@ import { useNavigate, useParams } from "react-router";
 import { useBookStore } from "../store/bookStore";
 
 const UpdateBook = () => {
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [author, setAuthor] = useState("");
   const [link, setLink] = useState("");
   const [review, setReview] = useState("");
-  const { isLoading, error, fetchBook, book } = useBookStore();
+  const { isLoading, error, fetchBook, book, updateBook } = useBookStore();
   const navigate = useNavigate();
   const params = useParams();
 
@@ -27,20 +27,20 @@ const UpdateBook = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!image || !title || !author || !link) {
+    if (!title || !author || !link) {
       toast.error("Please fill in required information.");
       return;
     }
 
-    // const { message } = await addBook(
-    //   image,
-    //   title,
-    //   subtitle,
-    //   author,
-    //   link,
-    //   review
-    // );
-
+    const { message } = await updateBook(
+      params.id,
+      image,
+      title,
+      subtitle,
+      author,
+      link,
+      review
+    );
     toast.success(message);
     navigate(`/book/${book._id}`);
   };
@@ -51,7 +51,6 @@ const UpdateBook = () => {
 
   useEffect(() => {
     if (book) {
-      setImage(book.image);
       setTitle(book.title);
       setSubtitle(book.subtitle);
       setAuthor(book.author);
@@ -59,6 +58,7 @@ const UpdateBook = () => {
       setReview(book.review);
     }
   }, [book]);
+
   return (
     <div className="min-h-screen text-[#252422] bg-[#f5f5f5] px-4 md:px-12 pb-16">
       <h2 className="text-center font-semibold pt-8 text-xl md:text-2xl w-full max-w-xl mx-auto">
@@ -70,7 +70,7 @@ const UpdateBook = () => {
         className="w-full max-w-xl mx-auto flex flex-col justify-center items-center space-y-4 mt-5 md:mt-10"
       >
         <div className="flex flex-col w-full">
-          <label className="md:text-lg">Change Book Image*:</label>
+          <label className="md:text-lg">Change Book Image:</label>
           <input
             type="file"
             accept="image/*"

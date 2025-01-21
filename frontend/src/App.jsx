@@ -57,7 +57,14 @@ function App() {
         />
 
         <Route path="/book/:id" element={<Bookpage />} />
-        <Route path="/book/:id/update" element={<UpdateBook />} />
+        <Route
+          path="/book/:id/update"
+          element={
+            <RedirectUnauthenticatedUser>
+              <UpdateBook />
+            </RedirectUnauthenticatedUser>
+          }
+        />
         <Route path="/search" element={<Searchpage />} />
       </Routes>
       <Footer />
