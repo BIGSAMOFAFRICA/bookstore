@@ -13,7 +13,7 @@ const Navbar = () => {
     <nav className="bg-[#252422] flex justify-between items-center text-[#FFFCF2] px-4 md:px-12 py-4 md:py-6">
       <Link to={"/"}>
         <label className="font-semibold tracking-wider md:text-lg lg:text-xl cursor-pointer">
-          📔BIGSAMOFAFRICA
+          NID II REACT PROJECT
         </label>
       </Link>
 
