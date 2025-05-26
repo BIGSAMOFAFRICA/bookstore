@@ -95,7 +95,7 @@ app.post("/api/login", async (req, res) => {
     const userDoc = await User.findOne({ username });
 
     if (!userDoc) {
-      return res.status(400).json({ message: "Invalid credentials." });
+      return res.status(400).json({ message: error.message });
     }
 
     const isPasswordValid = await bcryptjs.compareSync(
