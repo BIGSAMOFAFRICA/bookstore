@@ -10,8 +10,7 @@ import Book from "./models/book.model.js";
 import { v2 as cloudinary } from "cloudinary";
 import path from "path";
 
-require('dotenv').config();
-
+dotenv.config();
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -21,7 +20,7 @@ cloudinary.config({
 
 const app = express();
 
-const PORT = process.env.PORT 
+const PORT = process.env.PORT || 5000;
 
 const __dirname = path.resolve();
 
