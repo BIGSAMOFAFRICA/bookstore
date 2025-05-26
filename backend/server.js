@@ -24,8 +24,10 @@ const PORT = process.env.PORT || 5000;
 
 const __dirname = path.resolve();
 
-// Middlewares
+// Connect to DB immediately
+connectToDB();
 
+// Middlewares
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json({ limit: "20mb" }));
 app.use(cookieParser());
@@ -33,7 +35,6 @@ app.use(cookieParser());
 // ================== Authentication ===============
 
 // Sign up
-
 app.post("/api/signup", async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -64,7 +65,6 @@ app.post("/api/signup", async (req, res) => {
     });
 
     // jwt
-
     if (userDoc) {
       const token = jwt.sign({ id: userDoc._id }, process.env.JWT_SECRET, {
         expiresIn: "7d",
@@ -87,7 +87,6 @@ app.post("/api/signup", async (req, res) => {
 });
 
 // Log in
-
 app.post("/api/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -95,20 +94,16 @@ app.post("/api/login", async (req, res) => {
     const userDoc = await User.findOne({ username });
 
     if (!userDoc) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: "User not found." });
     }
 
-    const isPasswordValid = await bcryptjs.compareSync(
-      password,
-      userDoc.password
-    );
+    const isPasswordValid = await bcryptjs.compare(password, userDoc.password);
 
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid credentials." });
     }
 
     // jwt
-
     if (userDoc) {
       const token = jwt.sign({ id: userDoc._id }, process.env.JWT_SECRET, {
         expiresIn: "7d",
@@ -128,12 +123,11 @@ app.post("/api/login", async (req, res) => {
     });
   } catch (error) {
     console.log("Error logging in", error);
-    res.status(400).json({ mesage: error.message });
+    res.status(400).json({ message: error.message });
   }
 });
 
 // Fetch User
-
 app.get("/api/fetch-user", async (req, res) => {
   const { token } = req.cookies;
   if (!token) {
@@ -147,7 +141,7 @@ app.get("/api/fetch-user", async (req, res) => {
       return res.status(401).json({ message: "Invalid token" });
     }
 
-    const userDoc = await User.findById(decoded.id).select("-password"); // Find all fields except the password
+    const userDoc = await User.findById(decoded.id).select("-password"); // Exclude password
 
     if (!userDoc) {
       return res.status(400).json({ message: "User not found." });
@@ -162,6 +156,7 @@ app.get("/api/fetch-user", async (req, res) => {
   }
 });
 
+// Logout
 app.post("/api/logout", async (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "Logged out successfully." });
@@ -178,7 +173,7 @@ app.post("/api/add-book", async (req, res) => {
   try {
     // Image processes
     const imageResponse = await cloudinary.uploader.upload(image, {
-      folder: "/Favlib",
+      folder: "Favlib",
     });
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -242,38 +237,44 @@ app.post("/api/update-book/:id", async (req, res) => {
     if (image) {
       // Delete the previous one first
       const parts = book.image.split("/");
-      const fileName = parts[parts.length - 1]; // Extract the last part: "ihwklaco9wt2d0kqdqrs.png"
+      const fileName = parts[parts.length - 1]; // e.g. "ihwklaco9wt2d0kqdqrs.png"
       const imageId = fileName.split(".")[0];
-      cloudinary.uploader
-        .destroy(`Favlib/${imageId}`)
-        .then((result) => console.log("result: ", result));
+      await cloudinary.uploader.destroy(`Favlib/${imageId}`);
 
       // Then upload the new one
       const imageResponse = await cloudinary.uploader.upload(image, {
-        folder: "/Favlib",
+        folder: "Favlib",
       });
 
-      const updatedBook = await Book.findByIdAndUpdate(id, {
-        image: imageResponse.secure_url,
-        title,
-        subtitle,
-        author,
-        link,
-        review,
-      });
+      const updatedBook = await Book.findByIdAndUpdate(
+        id,
+        {
+          image: imageResponse.secure_url,
+          title,
+          subtitle,
+          author,
+          link,
+          review,
+        },
+        { new: true }
+      );
 
       return res
         .status(200)
         .json({ book: updatedBook, message: "Book updated successfully." });
     }
 
-    const updatedBook = await Book.findByIdAndUpdate(id, {
-      title,
-      subtitle,
-      author,
-      link,
-      review,
-    });
+    const updatedBook = await Book.findByIdAndUpdate(
+      id,
+      {
+        title,
+        subtitle,
+        author,
+        link,
+        review,
+      },
+      { new: true }
+    );
 
     return res
       .status(200)
@@ -301,11 +302,9 @@ app.delete("/api/delete-book/:id", async (req, res) => {
 
     // Delete the image first
     const parts = book.image.split("/");
-    const fileName = parts[parts.length - 1]; // Extract the last part: "ihwklaco9wt2d0kqdqrs.png"
+    const fileName = parts[parts.length - 1]; // e.g. "ihwklaco9wt2d0kqdqrs.png"
     const imageId = fileName.split(".")[0];
-    cloudinary.uploader
-      .destroy(`Favlib/${imageId}`)
-      .then((result) => console.log("result: ", result));
+    await cloudinary.uploader.destroy(`Favlib/${imageId}`);
 
     // Then delete from database
     await Book.findByIdAndDelete(id);
@@ -331,7 +330,8 @@ app.get("/api/search", async (req, res) => {
   }
 });
 
-if(process.env.NODE_ENV === "production"){
+// Serve frontend in production
+if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
   app.get("*", (req, res) => {
@@ -340,6 +340,5 @@ if(process.env.NODE_ENV === "production"){
 }
 
 app.listen(PORT, () => {
-  connectToDB();
   console.log(`Server running on port ${PORT}`);
 });
