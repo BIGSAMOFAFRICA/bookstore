@@ -5,14 +5,14 @@ const API_URL = "https://bookstore-2-osnr.onrender.com/api";
 axios.defaults.withCredentials = true;
 
 export const useAuthStore = create((set) => ({
-  // initial states
+
   user: null,
   isLoading: false,
   error: null,
   message: null,
   fetchingUser: true,
 
-  // functions
+
 
   signup: async (username, email, password) => {
     set({ isLoading: true, message: null });

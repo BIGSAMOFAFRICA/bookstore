@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+
 import { useEffect } from "react";
 import { useAuthStore } from "../store/authStore";
 import { useNavigate } from "react-router";
@@ -13,9 +13,9 @@ const RedirectUnauthenticatedUser = ({ children }) => {
     }
   }, [user, navigate]);
 
-  // Render children only if there is a user
+
   if (!user) {
-    return null; // Don't render anything while redirecting
+    return null; 
   }
 
   return <>{children}</>;

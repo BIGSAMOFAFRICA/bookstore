@@ -28,7 +28,7 @@ const Navbar = () => {
           </Link>
 
           <Link to={"/signup"}>
-            <button className="bg-[#403D39] px-3 py-2">Sign up</button>
+            <button className="bg-[#403D39] px-3 py-2">Register</button>
           </Link>
         </div>
       ) : (
