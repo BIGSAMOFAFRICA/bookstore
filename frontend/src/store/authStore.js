@@ -13,7 +13,6 @@ export const useAuthStore = create((set) => ({
   fetchingUser: true,
 
 
-
   signup: async (username, email, password) => {
     set({ isLoading: true, message: null });
 
