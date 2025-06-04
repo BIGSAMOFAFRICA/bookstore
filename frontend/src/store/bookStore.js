@@ -1,18 +1,16 @@
 import { create } from "zustand";
 import axios from "axios";
-
 const API_URL = "https://bookstore-2-osnr.onrender.com/api";
 axios.defaults.withCredentials = true;
 
 export const useBookStore = create((set) => ({
-  // initial states
+
   book: null,
   books: [],
   isLoading: false,
   error: null,
   message: null,
 
-  // functions
 
   addBook: async (image, title, subtitle, author, link, review) => {
     set({ isLoading: true, error: null, message: null });
@@ -55,7 +53,6 @@ export const useBookStore = create((set) => ({
       throw error;
     }
   },
-
   fetchBook: async (id) => {
     set({ isLoading: true, error: null });
 
